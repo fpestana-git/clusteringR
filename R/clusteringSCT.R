@@ -1,11 +1,12 @@
 # Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs SCT normalization, PCA, etc, clustering
 
-clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,pcaValueOptimal = NULL, datasetName, labelValue = T,resolutionValue = 0.2){
+clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,selectedFeatureNames,pcaValueOptimal = NULL, datasetName, labelValue = T,resolutionValue = 0.2){
   # Spatial data
   
   # Select only non pcdh genes for running the clustering of the data
   if (selectFeatures) {
-    selectFeatures <- grep(pattern = "^Pcdh|Il33",x = rownames(datasetObject),invert = T,value = T)
+    #selectFeatures <- grep(pattern = "^Pcdh|Il33",x = rownames(datasetObject),invert = T,value = T)
+    selectedFeatures <- selectedFeatureNames
   }
   dataset1 <- CreateSeuratObject(counts = datasetObject,meta.data = metadataObject)
   dataset1 <- SCTransform(object = dataset1, assay = "RNA", verbose = TRUE,residual.features = selectFeatures,do.scale = T,ncells = 1000)
