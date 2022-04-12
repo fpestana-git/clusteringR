@@ -1,6 +1,6 @@
 #' Seurat clustering with SCT transformation
 #' 
-#' # Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs SCT normalization, PCA, etc, clustering
+#' Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs SCT normalization, PCA, etc, clustering
 #' 
 #' @param datasetObject dataset object
 #' @param metadataObject metadata object
