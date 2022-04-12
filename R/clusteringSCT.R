@@ -1,6 +1,6 @@
 # Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs SCT normalization, PCA, etc, clustering
 
-runSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,pcaValueOptimal = NULL, datasetName, labelValue = T,resolutionValue = 0.2){
+clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,pcaValueOptimal = NULL, datasetName, labelValue = T,resolutionValue = 0.2){
   # Spatial data
   
   # Select only non pcdh genes for running the clustering of the data
