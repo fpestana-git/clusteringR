@@ -6,7 +6,7 @@ clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,sel
   # Select only non pcdh genes for running the clustering of the data
   if (selectFeatures) {
     #selectFeatures <- grep(pattern = "^Pcdh|Il33",x = rownames(datasetObject),invert = T,value = T)
-    selectedFeatures <- selectedFeatureNames
+    selectFeatures <- selectedFeatureNames
   }
   dataset1 <- CreateSeuratObject(counts = datasetObject,meta.data = metadataObject)
   dataset1 <- SCTransform(object = dataset1, assay = "RNA", verbose = TRUE,residual.features = selectFeatures,do.scale = T,ncells = 1000)
