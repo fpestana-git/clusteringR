@@ -33,7 +33,7 @@ clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,sel
   dataset1 <- RunUMAP(dataset1, reduction = "pca", dims = 1:pcaValueOptimal)
   
   # Add resolution value to the seurat object
-  spClustering_SCT_CTX1@reductions[["resolutionValue"]] <- resolutionValue
+  dataset1@reductions[["resolutionValue"]] <- resolutionValue
   #resolutionValue <- dataset1@commands[["FindClusters"]]@params[["resolution"]]
   
   # Draw and plot dimplot (both with and without labels)
