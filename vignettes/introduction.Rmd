@@ -28,7 +28,7 @@ pbmc <- Read10X(data.dir = "../data/pbmc/")
 ```
 
 ```{r}
-clusteringSCT <- clusteringSCT(datasetObject = pbmc,selectFeatures = F)
+clusteringSCT <- clusteringSCT(datasetObject = pbmc,selectFeatures = F,datasetName = "test")
 
 ```
 

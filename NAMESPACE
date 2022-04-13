@@ -2,3 +2,4 @@
 
 export(clusteringLiger)
 export(clusteringSCT)
+export(clusteringSeurat)
