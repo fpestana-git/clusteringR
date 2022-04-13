@@ -1,6 +1,9 @@
 ---
 title: "introduction"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    keep_md: true
+    self_contained: true
 vignette: >
   %\VignetteIndexEntry{introduction}
   %\VignetteEngine{knitr::rmarkdown}
