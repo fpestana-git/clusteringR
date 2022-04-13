@@ -30,6 +30,8 @@ library(Seurat)
 library(patchwork)
 library(visualisR)
 library(ggplot2)
+library(rliger)
+library(pkgload)
 
 ```
 
@@ -45,7 +47,7 @@ seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadata
 
 seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "SCT")
 
-ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc))
+ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc), useiNMF = T)
 ```
 
 # Visualize clustering data

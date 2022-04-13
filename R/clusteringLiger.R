@@ -9,19 +9,23 @@
 #' @param resolutionValue default 0.4
 #' @param setVariableGenes default FALSE
 #' @param num.genesValue default NULL
-#' @param var.threshValue default NULL
+#' @param var.threshValue default 0.2
 #' @param useiNMF default FALSE
 #' @param useUINMF default FALSE
 #' @param unshared.threshValue default NULL
 #' 
 #' @export clusteringLiger
 
-clusteringLiger <- function(datasets, lambdaValue = 5, kValue = 25, referenceDatasetName, resolutionValue = 0.4,setVariableGenes = FALSE,num.genesValue = NULL, var.threshValue = NULL,useiNMF = FALSE, useUINMF = FALSE,unshared.threshValue = NULL){
+clusteringLiger <- function(datasets, lambdaValue = 5, kValue = 25, referenceDatasetName, resolutionValue = 0.4,setVariableGenes = FALSE,num.genesValue = NULL, var.threshValue = 0.2,useiNMF = FALSE, useUINMF = FALSE,unshared.threshValue = NULL){
 
     if(useUINMF){
-      liger <- createLiger(raw.data = datasets)# Normalize datasets
+      liger <- createLiger(raw.data = datasets,remove.missing = T)# Normalize datasets
       liger <- rliger::normalize(liger)
-      liger@var.genes = variableGenes
+      if(setVariableGenes){
+        liger@var.genes = variableGenes
+      }else{
+        liger <- selectGenes(liger, var.thresh = var.threshValue, do.plot = F)
+      }
       liger <- selectGenes(object = liger,unshared = T,unshared.datasets = list(3),unshared.thresh = unshared.threshValue) # only for new liger
       liger <- scaleNotCenter(object = liger,verbose = T)
       liger <- optimizeALS(liger,  lambda = lambdaValue , use.unshared = T, max.iters = 30, thresh=1e-6, k =kValue)
@@ -30,7 +34,11 @@ clusteringLiger <- function(datasets, lambdaValue = 5, kValue = 25, referenceDat
     if(useiNMF){
       liger <- createLiger(raw.data = datasets,remove.missing = T)# Normalize datasets # for normal liger
       liger <- rliger::normalize(liger)
-      liger@var.genes = variableGenes
+      if(setVariableGenes){
+        liger@var.genes = variableGenes
+      }else{
+        liger <- selectGenes(liger, var.thresh = var.threshValue, do.plot = F)
+      }
       liger <- scaleNotCenter(liger, remove.missing = TRUE,verbose = T) # for normal liger
       liger <- optimizeALS(liger,  lambda = lambdaValue , use.unshared = F, max.iters = 50, thresh=1e-6, k =kValue, vectorized.lambda = TRUE) # for normal liger
       

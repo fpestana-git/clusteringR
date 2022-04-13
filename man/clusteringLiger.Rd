@@ -12,7 +12,7 @@ clusteringLiger(
   resolutionValue = 0.4,
   setVariableGenes = FALSE,
   num.genesValue = NULL,
-  var.threshValue = NULL,
+  var.threshValue = 0.2,
   useiNMF = FALSE,
   useUINMF = FALSE,
   unshared.threshValue = NULL
@@ -33,7 +33,7 @@ clusteringLiger(
 
 \item{num.genesValue}{default NULL}
 
-\item{var.threshValue}{default NULL}
+\item{var.threshValue}{default 0.2}
 
 \item{useiNMF}{default FALSE}
 
