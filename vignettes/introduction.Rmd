@@ -1,0 +1,36 @@
+---
+title: "introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(clusteringR)
+library(dplyr)
+library(Seurat)
+library(patchwork)
+library(pkgload)
+```
+
+```{r}
+# Load the PBMC dataset
+pbmc <- Read10X(data.dir = "../data/pbmc/")
+```
+
+```{r}
+clusteringSCT <- clusteringSCT(datasetObject = pbmc,selectFeatures = F)
+
+```
+
+load_all(path = "../u0117021/LabFiles/_Drylab/Packages/clusteringR/")
+

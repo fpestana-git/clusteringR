@@ -6,7 +6,6 @@
 \usage{
 clusteringSCT(
   datasetObject,
-  metadataObject,
   selectFeatures = NULL,
   selectedFeatureNames,
   pcaValueOptimal = NULL,
@@ -17,8 +16,6 @@ clusteringSCT(
 \arguments{
 \item{datasetObject}{dataset object}
 
-\item{metadataObject}{metadata object}
-
 \item{selectFeatures}{choose if features are to be selected (default NULL)}
 
 \item{selectedFeatureNames}{list of features to use on the clustering}
@@ -28,6 +25,8 @@ clusteringSCT(
 \item{datasetName}{define the name of the dataset}
 
 \item{resolutionValue}{define the resolution value to use for clustering (default 0.2)}
+
+\item{metadataObject}{metadata object}
 }
 \description{
 Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs SCT normalization, PCA, etc, clustering

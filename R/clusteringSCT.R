@@ -12,13 +12,13 @@
 #' 
 #' @export clusteringSCT
 
-clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,selectedFeatureNames,pcaValueOptimal = NULL, datasetName,resolutionValue = 0.2){
+clusteringSCT <- function(datasetObject,selectFeatures = NULL,selectedFeatureNames,pcaValueOptimal = NULL, datasetName,resolutionValue = 0.2){
   # Select only non pcdh genes for running the clustering of the data
   if (selectFeatures) {
     #selectFeatures <- grep(pattern = "^Pcdh|Il33",x = rownames(datasetObject),invert = T,value = T)
     selectFeatures <- selectedFeatureNames
   }
-  dataset1 <- CreateSeuratObject(counts = datasetObject,meta.data = metadataObject)
+  dataset1 <- CreateSeuratObject(counts = datasetObject)
   dataset1 <- SCTransform(object = dataset1, assay = "RNA", verbose = TRUE,residual.features = selectFeatures,do.scale = T,ncells = 1000)
 
   dataset1 <- RunPCA(dataset1, assay = "SCT", verbose = TRUE)
