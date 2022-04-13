@@ -19,6 +19,8 @@ library(clusteringR)
 library(dplyr)
 library(Seurat)
 library(patchwork)
+library(visualisR)
+library(ggplot2)
 
 ```
 
