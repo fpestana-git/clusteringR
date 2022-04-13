@@ -5,7 +5,8 @@
 #' @param datasetObject dataset object
 #' @param datasetName
 #' @param metadataAvailable whether there is prior metadata available (default TRUE)
-#' @param mapTypeValue which dimensionality reduction to use
+#' @param normalizationMethod which normalization method to use (default LOG). options log normalization or SCTransform normalization (SCT)
+#' @param reductionValue which dimensionality reduction to use, umap or tsne (default umap)
 #' @param metadataObject metadata object
 #' @param resolutionValue define the resolution value to use for clustering (default 0.1)
 #' @param integrateValue whether dataset integration is needed (default FALSE)
@@ -14,17 +15,17 @@
 #' @param ngenes minimum number of features expressed in a cell (default 200)
 #' @param scaleFactor value for scaling (default 10000)
 #' @param nPCAS number of principal components to use (default 30)
-#' @param selectionFeatures whether features need to be selected
+#' @param selectFeatures whether features need to be selected. Takes all features as default (default NULL)
 #'
 #' @export clusteringSeurat
 
 
 # This function runs a full Seurat analysis: normalization, scaling, clustering, PCA analysis
-clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE, mapTypeValue = "umap", metadataObject, resolutionValue = 0.1, integrateValue = FALSE,specificPCA = FALSE, ngenes = 200,scaleFactor = 10000,nPCAS=30, selectionFeatures=FALSE){
+clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE,normalizationMethod = "LOG", mapTypeValue = "umap", metadataObject, reductionValue = "umap",resolutionValue = 0.1, pcaValueOptimal = NULL, integrateValue = FALSE,specificPCA = FALSE, ngenes = 200,scaleFactor = 10000,nPCAS=30, selectFeatures = NULL){
   # Create Seurat object
     #datasetSeurat <- createSeurat(projectName = datasetName,dataset = datasetObject,integration = integrateValue, ngenes, scaleFactor,nPCAS,selectionFeatures)
     # Load selected features (if not NULL)
-    if (selectFeatures) {
+    if (!is.null(selectFeatures)) {
       selectFeatures <- selectedFeatureNames
     }
   
@@ -32,11 +33,9 @@ clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE
     datasetSeurat <- CreateSeuratObject(counts = datasetObject, project = datasetName,min.cells = 1,min.features = 1)
     # Add name of the dataset
     datasetSeurat$stim <- datasetName
-    # Filter cells that express less than ngenes
-    #datasetSeurat <- subset(datasetSeurat, subset = nFeature_RNA >= ngenes)
-    
+
     # Apply different normalization methods 
-    if (normalizationMethod == "log") {
+    if (normalizationMethod == "LOG") {
       datasetSeurat <- NormalizeData(datasetSeurat, normalization.method = "LogNormalize", scale.factor = scaleFactor, verbose = TRUE)
       datasetSeurat <- ScaleData(datasetSeurat, verbose = TRUE, features = rownames(datasetSeurat))
       datasetSeurat <- FindVariableFeatures(datasetSeurat, selection.method = "vst", nfeatures = 2000, verbose = TRUE)
@@ -45,23 +44,8 @@ clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE
     }
     
     # Run PCA
-    datasetSeurat <- RunPCA(datasetSeurat, npcs = nPCAS, features = VariableFeatures(object = datasetSeurat), verbose = TRUE)
+    datasetSeurat <- RunPCA(datasetSeurat, npcs = nPCAS, verbose = TRUE)
 
-    # # Run PCA only if integration is not the goal
-    # if (integration == FALSE) {
-    #   # Apply data scaling
-    #   datasetSeurat <- ScaleData(datasetSeurat, verbose = TRUE, features = rownames(datasetSeurat))
-    #   if(selectionFeatures == TRUE){
-    #     # If selection of features is needed, run on selected features
-    #     #selectedFeatures <- grep(pattern = "^Pcdh|Il33",x = datasetSeurat@assays[["RNA"]]@data@Dimnames[[1]],value = T,invert = T)
-    #     datasetSeurat <- RunPCA(datasetSeurat, features = selectedFeatureNames, npcs = nPCAS,verbose = TRUE)
-    #   }else{
-    #     # If selection of features is not needed, run findvariablefeatures
-    #     datasetSeurat <- FindVariableFeatures(datasetSeurat, selection.method = "vst", nfeatures = 2000, verbose = TRUE)
-    #     datasetSeurat <- RunPCA(datasetSeurat, npcs = nPCAS, features = VariableFeatures(object = datasetSeurat), verbose = TRUE)
-    #   }
-    # }
-    # 
     # Calculate PCA value automatically
     if (is.null(pcaValueOptimal)) {
       pcaValueOptimal <- findOptimalPCA(seuratObj = datasetSeurat)
@@ -71,31 +55,18 @@ clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE
     
     # Store the pca and resolution values on the Seurat object
     datasetSeurat@reductions[["pcaValueOptimal"]] <- pcaValueOptimal
-    dataset1@reductions[["resolutionValue"]] <- resolutionValue
+    datasetSeurat@reductions[["resolutionValue"]] <- resolutionValue
     
     # Run clustering
     datasetSeurat <- FindNeighbors(object = datasetSeurat, reduction = "pca", dims = 1:pcaValueOptimal, verbose = FALSE)
     datasetSeurat <- FindClusters(object = datasetSeurat, resolution = resolutionValue, verbose = FALSE)
     
     # Run visualization
-    if(mapType == "umap"){
+    if(reductionValue == "umap"){
       datasetSeurat <- RunUMAP(object = datasetSeurat, reduction = "pca", dims = 1:pcaValueOptimal, verbose = FALSE)
-    }else if(mapType == "tsne"){
+    }else if(reductionValue == "tsne"){
       datasetSeurat <- RunTSNE(object = datasetSeurat, reduction = "pca", dims = 1:pcaValueOptimal, verbose = FALSE,check_duplicates=FALSE)
     }
-    
-    # # Create UMAP/Tsne depending on PCA value defined
-    # if (specificPCA != FALSE) {
-    #   PCAvalue <- specificPCA
-    #   # Generate UMAP
-    #   datasetSeurat <- createMap(seuratObject = datasetSeurat,mapType = mapTypeValue,pca = PCAvalue,resolution = resolutionValue)
-    #   
-    # }else{
-    #   # Check optimal PCA value
-    #   PCAvalue <- findOptimalPCA(datasetSeurat)
-    #   # Generate UMAP
-    #   datasetSeurat <- createMap(seuratObject = datasetSeurat, mapType = mapTypeValue,pca = PCAvalue,resolution = resolutionValue)
-    # }
     
     # Add Metadata file if available
     datasetSeurat <- addMetadataSeurat(metadataAvailable,metadataObject,datasetSeurat)

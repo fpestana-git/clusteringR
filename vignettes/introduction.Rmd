@@ -19,18 +19,26 @@ library(clusteringR)
 library(dplyr)
 library(Seurat)
 library(patchwork)
-library(pkgload)
+
 ```
 
+# Load data
 ```{r}
 # Load the PBMC dataset
 pbmc <- Read10X(data.dir = "../data/pbmc/")
 ```
 
+# Clustering
 ```{r}
-clusteringSCT <- clusteringSCT(datasetObject = pbmc,selectFeatures = F,datasetName = "test")
+seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "LOG")
 
+seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "SCT")
 ```
 
-load_all(path = "../u0117021/LabFiles/_Drylab/Packages/clusteringR/")
+# Visualize clustering data
+```{r}
+drawDimPlot(seuratObject = seuratLOG,datasetName = "pbmc")
+drawDimPlot(seuratObject = seuratSCT,datasetName = "pbmc")
+```
+
 

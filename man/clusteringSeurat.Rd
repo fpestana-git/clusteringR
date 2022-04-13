@@ -8,15 +8,18 @@ clusteringSeurat(
   datasetObject,
   datasetName,
   metadataAvailable = TRUE,
+  normalizationMethod = "LOG",
   mapTypeValue = "umap",
   metadataObject,
+  reductionValue = "umap",
   resolutionValue = 0.1,
+  pcaValueOptimal = NULL,
   integrateValue = FALSE,
   specificPCA = FALSE,
   ngenes = 200,
   scaleFactor = 10000,
   nPCAS = 30,
-  selectionFeatures = FALSE
+  selectFeatures = NULL
 )
 }
 \arguments{
@@ -24,11 +27,15 @@ clusteringSeurat(
 
 \item{metadataAvailable}{whether there is prior metadata available (default TRUE)}
 
-\item{mapTypeValue}{which dimensionality reduction to use}
+\item{normalizationMethod}{which normalization method to use (default LOG). options log normalization or SCTransform normalization (SCT)}
 
 \item{metadataObject}{metadata object}
 
+\item{reductionValue}{which dimensionality reduction to use, umap or tsne (default umap)}
+
 \item{resolutionValue}{define the resolution value to use for clustering (default 0.1)}
+
+\item{pcaValueOptimal}{define a specific PCA value to use (default NULL calculates automatically the optimal PCA value)}
 
 \item{integrateValue}{whether dataset integration is needed (default FALSE)}
 
@@ -40,9 +47,7 @@ clusteringSeurat(
 
 \item{nPCAS}{number of principal components to use (default 30)}
 
-\item{selectionFeatures}{whether features need to be selected}
-
-\item{pcaValueOptimal}{define a specific PCA value to use (default NULL calculates automatically the optimal PCA value)}
+\item{selectFeatures}{whether features need to be selected. Takes all features as default (default NULL)}
 }
 \description{
 Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs log normalization, PCA, etc, clustering
