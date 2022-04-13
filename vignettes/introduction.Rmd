@@ -44,6 +44,8 @@ pbmc <- Read10X(data.dir = "../data/pbmc/")
 seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "LOG")
 
 seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "SCT")
+
+ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc))
 ```
 
 # Visualize clustering data

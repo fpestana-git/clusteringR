@@ -25,6 +25,8 @@ clusteringSeurat(
 \arguments{
 \item{datasetObject}{dataset object}
 
+\item{datasetName}{name of the dataset}
+
 \item{metadataAvailable}{whether there is prior metadata available (default TRUE)}
 
 \item{normalizationMethod}{which normalization method to use (default LOG). options log normalization or SCTransform normalization (SCT)}

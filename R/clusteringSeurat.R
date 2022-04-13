@@ -3,7 +3,7 @@
 #' Function that takes a dataset (either spatial or scRNA-seq), creates Seurat object, runs log normalization, PCA, etc, clustering
 #' 
 #' @param datasetObject dataset object
-#' @param datasetName
+#' @param datasetName name of the dataset
 #' @param metadataAvailable whether there is prior metadata available (default TRUE)
 #' @param normalizationMethod which normalization method to use (default LOG). options log normalization or SCTransform normalization (SCT)
 #' @param reductionValue which dimensionality reduction to use, umap or tsne (default umap)
