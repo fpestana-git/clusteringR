@@ -17,6 +17,12 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Install packages
+```{r}
+devtools::install_github("fpestana-git/clusteringR",force = F)
+devtools::install_github("fpestana-git/visualisR",force = F)
+```
+
 ```{r setup}
 library(clusteringR)
 library(dplyr)
