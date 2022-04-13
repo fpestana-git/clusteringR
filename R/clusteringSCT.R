@@ -9,6 +9,8 @@
 #' @param pcaValueOptimal define a specific PCA value to use (default NULL). Otherwise it will calculate an optimal PCA value.
 #' @param datasetName define the name of the dataset
 #' @param resolutionValue define the resolution value to use for clustering (default 0.2)
+#' 
+#' @export clusteringSCT
 
 clusteringSCT <- function(datasetObject,metadataObject,selectFeatures = NULL,selectedFeatureNames,pcaValueOptimal = NULL, datasetName,resolutionValue = 0.2){
   # Select only non pcdh genes for running the clustering of the data
