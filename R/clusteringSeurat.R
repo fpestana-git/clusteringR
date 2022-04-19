@@ -37,7 +37,7 @@ clusteringSeurat <- function(datasetObject,datasetName, metadataAvailable = TRUE
     # Apply different normalization methods 
     if (normalizationMethod == "LOG") {
       datasetSeurat <- NormalizeData(datasetSeurat, normalization.method = "LogNormalize", scale.factor = scaleFactor, verbose = TRUE)
-      datasetSeurat <- ScaleData(datasetSeurat, verbose = TRUE, features = rownames(datasetSeurat))
+      datasetSeurat <- ScaleData(datasetSeurat, verbose = TRUE)
       datasetSeurat <- FindVariableFeatures(datasetSeurat, selection.method = "vst", nfeatures = 2000, verbose = TRUE)
     }else if (normalizationMethod == "SCT"){
       datasetSeurat <- SCTransform(object = datasetSeurat, assay = "RNA", verbose = TRUE,residual.features = selectFeatures,do.scale = T,ncells = 1000)

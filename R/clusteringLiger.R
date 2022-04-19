@@ -8,6 +8,7 @@
 #' @param referenceDatasetName name of dataset to use as reference dataset
 #' @param resolutionValue default 0.4
 #' @param setVariableGenes default FALSE
+#' @param variableGenes default NULL
 #' @param num.genesValue default NULL
 #' @param var.threshValue default 0.2
 #' @param useiNMF default FALSE
@@ -16,7 +17,7 @@
 #' 
 #' @export clusteringLiger
 
-clusteringLiger <- function(datasets, lambdaValue = 5, kValue = 25, referenceDatasetName, resolutionValue = 0.4,setVariableGenes = FALSE,num.genesValue = NULL, var.threshValue = 0.2,useiNMF = FALSE, useUINMF = FALSE,unshared.threshValue = NULL){
+clusteringLiger <- function(datasets, lambdaValue = 5, kValue = 25, referenceDatasetName, resolutionValue = 0.4,setVariableGenes = FALSE,variableGenes = NULL, num.genesValue = NULL, var.threshValue = 0.2,useiNMF = FALSE, useUINMF = FALSE,unshared.threshValue = NULL){
 
     if(useUINMF){
       liger <- createLiger(raw.data = datasets,remove.missing = T)# Normalize datasets
