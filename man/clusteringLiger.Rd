@@ -11,6 +11,7 @@ clusteringLiger(
   referenceDatasetName,
   resolutionValue = 0.4,
   setVariableGenes = FALSE,
+  variableGenes = NULL,
   num.genesValue = NULL,
   var.threshValue = 0.2,
   useiNMF = FALSE,
@@ -30,6 +31,8 @@ clusteringLiger(
 \item{resolutionValue}{default 0.4}
 
 \item{setVariableGenes}{default FALSE}
+
+\item{variableGenes}{default NULL}
 
 \item{num.genesValue}{default NULL}
 
