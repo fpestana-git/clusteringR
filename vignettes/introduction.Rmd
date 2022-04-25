@@ -27,13 +27,11 @@ devtools::install_github("fpestana-git/visualisR",force = F)
 library(clusteringR)
 library(dplyr)
 library(Seurat)
-#library(patchwork)
 library(visualisR)
 library(ggplot2)
 library(rliger)
 library(ggpubr)
 library(viridis)
-#library(pkgload)
 ```
 
 # Load data
@@ -58,7 +56,7 @@ ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc),referenceDataset
 ```{r dimPlot}
 drawDimPlot(seuratObject = seuratLOG,datasetName = "pbmc")
 drawDimPlot(seuratObject = seuratSCT,datasetName = "pbmc")
-drawDimPlotLiger(ligerObject = ligerClustering)
+
 
 ```
 

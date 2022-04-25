@@ -12,6 +12,17 @@ vignette: >
 
 
 
+# Install packages
+
+```r
+devtools::install_github("fpestana-git/clusteringR",force = F)
+#> Skipping install of 'clusteringR' from a github remote, the SHA1 (5f4ed76a) has not changed since last install.
+#>   Use `force = TRUE` to force installation
+devtools::install_github("fpestana-git/visualisR",force = F)
+#> Skipping install of 'visualisR' from a github remote, the SHA1 (8b012896) has not changed since last install.
+#>   Use `force = TRUE` to force installation
+```
+
 
 ```r
 library(clusteringR)
@@ -26,9 +37,25 @@ library(dplyr)
 #>     intersect, setdiff, setequal, union
 library(Seurat)
 #> Attaching SeuratObject
-library(patchwork)
 library(visualisR)
 library(ggplot2)
+library(rliger)
+#> Loading required package: cowplot
+#> Loading required package: Matrix
+#> Loading required package: patchwork
+#> 
+#> Attaching package: 'patchwork'
+#> The following object is masked from 'package:cowplot':
+#> 
+#>     align_plots
+library(ggpubr)
+#> 
+#> Attaching package: 'ggpubr'
+#> The following object is masked from 'package:cowplot':
+#> 
+#>     get_legend
+library(viridis)
+#> Loading required package: viridisLite
 ```
 
 # Load data
@@ -41,6 +68,7 @@ pbmc <- Read10X(data.dir = "../data/pbmc/")
 # Clustering
 
 ```r
+# Run Seurat clustering using log normalization
 seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "LOG")
 #> Warning: Feature names cannot have underscores ('_'), replacing with dashes
 #> ('-')
@@ -85,6 +113,7 @@ seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadata
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
 
+# Run Seurat clustering using SCT normalization
 seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "SCT")
 #> Warning: Feature names cannot have underscores ('_'), replacing with dashes
 #> ('-')
@@ -218,7 +247,7 @@ seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadata
   |                                                                            
   |======================================================================| 100%
 #> Calculating gene attributes
-#> Wall clock passed: Time difference of 15.4273 secs
+#> Wall clock passed: Time difference of 14.72622 secs
 #> Determine variable features
 #> Place corrected count matrix in counts slot
 #> Centering and scaling data matrix
@@ -259,20 +288,166 @@ seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadata
 #> 	   HMOX1, LRRC25, IFITM3, LILRA3, VMO1, FCER1G, PILRA, TIMP1, CTD-2006K23.1, HCK 
 #> 	   LYPD2, COTL1, CEBPB, FAM110A, SERPINA1, AIF1, PPM1N, WARS, ADA, LILRB2
 #> [1] "The best pca to use should be: 10"
+
+# Run LIGER clustering using iNMF algorythm
+ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc),referenceDatasetName = "pbmc", useiNMF = T)
+#> Removing 16104 genes not expressing in pbmc.
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |======                                                                |   8%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |=================                                                     |  24%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  42%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |==================================                                    |  48%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |==========================================                            |  60%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |===========================================================           |  84%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |======================================================================| 100%
+#> Finished in 2.529688 mins, 50 iterations.
+#> Max iterations set: 50.
+#> Final objective delta: 1.624526e-05.
+#> Best results with seed 1.
+#> Louvain Clustering on quantile normalized cell factor loadings.
 ```
 
-# Visualize clustering data
+# Visualize Dim plot
 
 ```r
 drawDimPlot(seuratObject = seuratLOG,datasetName = "pbmc")
 ```
 
-![](introduction_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](introduction_files/figure-html/dimPlot-1.png)<!-- -->
 
 ```r
 drawDimPlot(seuratObject = seuratSCT,datasetName = "pbmc")
 ```
 
-![](introduction_files/figure-html/unnamed-chunk-4-2.png)<!-- -->
+![](introduction_files/figure-html/dimPlot-2.png)<!-- -->
 
+# Visualize Feature plot
+
+```r
+drawFeaturePlot(seuratObject = seuratLOG,
+                featureValues = c("S100A9","NKG7","LDHB","CD79A"),
+                nrowValue = 2,
+                ncolValue = 2,
+                datasetName = "test")
+#> [1] "1 of 4 total features done. S100A9"
+#> [1] "2 of 4 total features done. NKG7"
+#> [1] "3 of 4 total features done. LDHB"
+#> [1] "4 of 4 total features done. CD79A"
+```
+
+![](introduction_files/figure-html/featurePlot-1.png)<!-- -->
+
+# Visualize Heatmap
+
+```r
+# Visualize the variable features
+drawHeatmapPlot(seuratObject = seuratLOG,featureNames = c("S100A9","NKG7","LDHB","CD79A"),assaytype = "RNA",plotName = "test",groupValue = "seurat_clusters",drawLinesValue = T)
+#> Scale for 'fill' is already present. Adding another scale for 'fill', which
+#> will replace the existing scale.
+```
+
+![](introduction_files/figure-html/heatmap-1.png)<!-- -->
+
+# Visualize Dot plot
+
+```r
+drawDotPlot(seuratObject = seuratLOG,plotName = "test",featureValues = c("S100A9","NKG7","LDHB","CD79A"))
+```
+
+![](introduction_files/figure-html/dotPlot-1.png)<!-- -->
 
