@@ -27,12 +27,13 @@ devtools::install_github("fpestana-git/visualisR",force = F)
 library(clusteringR)
 library(dplyr)
 library(Seurat)
-library(patchwork)
+#library(patchwork)
 library(visualisR)
 library(ggplot2)
 library(rliger)
-library(pkgload)
-
+library(ggpubr)
+library(viridis)
+#library(pkgload)
 ```
 
 # Load data
@@ -42,18 +43,42 @@ pbmc <- Read10X(data.dir = "../data/pbmc/")
 ```
 
 # Clustering
-```{r}
+```{r Clustering}
+# Run Seurat clustering using log normalization
 seuratLOG <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "LOG")
 
+# Run Seurat clustering using SCT normalization
 seuratSCT <- clusteringSeurat(datasetObject = pbmc,datasetName = "test",metadataAvailable = F,mapTypeValue = "umap",normalizationMethod = "SCT")
 
-ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc), useiNMF = T)
+# Run LIGER clustering using iNMF algorythm
+ligerClustering <- clusteringLiger(datasets = list(pbmc = pbmc),referenceDatasetName = "pbmc", useiNMF = T)
 ```
 
-# Visualize clustering data
-```{r}
+# Visualize Dim plot
+```{r dimPlot}
 drawDimPlot(seuratObject = seuratLOG,datasetName = "pbmc")
 drawDimPlot(seuratObject = seuratSCT,datasetName = "pbmc")
+drawDimPlotLiger(ligerObject = ligerClustering)
+
 ```
 
+# Visualize Feature plot
+```{r featurePlot}
+drawFeaturePlot(seuratObject = seuratLOG,
+                featureValues = c("S100A9","NKG7","LDHB","CD79A"),
+                nrowValue = 2,
+                ncolValue = 2,
+                datasetName = "test")
+```
+
+# Visualize Heatmap
+```{r heatmap}
+# Visualize the variable features
+drawHeatmapPlot(seuratObject = seuratLOG,featureNames = c("S100A9","NKG7","LDHB","CD79A"),assaytype = "RNA",plotName = "test",groupValue = "seurat_clusters",drawLinesValue = T)
+```
+
+# Visualize Dot plot
+```{r dotPlot}
+drawDotPlot(seuratObject = seuratLOG,plotName = "test",featureValues = c("S100A9","NKG7","LDHB","CD79A"))
+```
 
